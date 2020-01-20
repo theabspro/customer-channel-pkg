@@ -1,0 +1,31 @@
+{
+    "name": "abs/customer-channel-pkg",
+    "description": "For Customer Channel and Group CRUD",
+    "type": "library",
+    "require":
+    {},
+    "require-dev":
+    {},
+    "authors": [
+    {
+        "name": "Abdul",
+        "email": "abdulpro@gmail.com"
+    }],
+    "minimum-stability": "dev",
+    "extra":
+    {
+        "laravel":
+        {
+            "providers": [
+                "Abs\\CustomerChannelPkg\\CustomerChannelPkgServiceProvider"
+            ]
+        }
+    },
+    "autoload":
+    {
+        "psr-4":
+        {
+            "Abs\\CustomerChannelPkg\\": "src/"
+        }
+    }
+}
