@@ -14,15 +14,16 @@ class CustomerChannelGroup extends Model {
 	protected $table = 'customer_channel_groups';
 	public $timestamps = true;
 	protected $fillable = [
-		'code',
+		'parent_id',
 		'name',
-		'cust_group',
-		'dimension',
-		'mobile_no',
-		'email',
 		'company_id',
-		'address',
 	];
+
+	protected $appends = ['switch_value'];
+
+	public function getSwitchValueAttribute() {
+		return !empty($this->attributes['deleted_at']) ? 'Inactive' : 'Active';
+	}
 
 	public static function createFromObject($record_data) {
 
