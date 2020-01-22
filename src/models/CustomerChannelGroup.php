@@ -25,6 +25,10 @@ class CustomerChannelGroup extends Model {
 		return !empty($this->attributes['deleted_at']) ? 'Inactive' : 'Active';
 	}
 
+	public static function getSubGroup($main_group_id) {
+		return collect(self::select('id', 'name')->where('parent_id', $main_group_id)->get()->prepend(['id' => '', 'name' => 'Select Sub Group']));
+	}
+
 	public static function createFromObject($record_data) {
 
 		$errors = [];

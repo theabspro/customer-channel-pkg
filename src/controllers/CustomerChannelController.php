@@ -83,6 +83,11 @@ class CustomerChannelGroupController extends Controller {
 		return response()->json($this->data);
 	}
 
+	public function getSubGroupList($main_group_id) {
+		$this->data['sub_group_list'] = CustomerChannelGroup::getSubGroup($main_group_id);
+		return response()->json($this->data);
+	}
+
 	public function saveCustomerChannelGroup(Request $request) {
 		// dd($request->all());
 		try {

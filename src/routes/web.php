@@ -5,4 +5,5 @@ Route::group(['namespace' => 'Abs\CustomerChannelPkg', 'middleware' => ['web', '
 	Route::get('/customer-channel-group/get-form-data/{id?}', 'CustomerChannelGroupController@getCustomerChannelGroupFormData')->name('getCustomerChannelGroupFormData');
 	Route::post('/customer-channel-group/save', 'CustomerChannelGroupController@saveCustomerChannelGroup')->name('saveCustomerChannelGroup');
 	Route::get('/customer-channel-group/delete/{id}', 'CustomerChannelGroupController@deleteCustomerChannelGroup')->name('deleteCustomerChannelGroup');
+	Route::get('/customer-channel-group/get-sub-group/{main_group_id}', 'CustomerChannelGroupController@getSubGroupList')->name('getSubGroupList');
 });
