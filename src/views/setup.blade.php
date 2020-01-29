@@ -1,4 +1,4 @@
-@if(config('custom.PKG_DEV'))
+@if(config('customer-channel-pkg.DEV'))
     <?php $customer_channel_pkg_prefix = '/packages/abs/customer-channel-pkg/src';?>
 @else
     <?php $customer_channel_pkg_prefix = '';?>
