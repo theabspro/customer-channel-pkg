@@ -196,7 +196,7 @@ app.component('customerChannelGroupForm', {
         $.validator.messages.maxlength = 'Maximum of 191 charaters';
         jQuery.validator.addClassRules("sub_group_name", {
             required: true,
-            minlength: 3,
+            minlength: 2,
             maxlength: 191,
         });
 

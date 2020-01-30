@@ -95,13 +95,13 @@ class CustomerChannelGroupController extends Controller {
 				'name.required' => 'Customer Channel Group Name is Required',
 				'name.unique' => 'Customer Channel Group Name is already taken',
 				'name.max' => 'Maximum 255 Characters',
-				'name.min' => 'Minimum 3 Characters',
+				'name.min' => 'Minimum 2 Characters',
 			];
 			$validator = Validator::make($request->all(), [
 				'name' => [
 					'required:true',
 					'max:255',
-					'min:3',
+					'min:2',
 					'unique:customer_channel_groups,name,' . $request->id . ',id,company_id,' . Auth::user()->company_id . ',parent_id,NULL',
 				],
 			], $error_messages);
@@ -113,7 +113,7 @@ class CustomerChannelGroupController extends Controller {
 				'sub_group_name.required' => 'Customer Channel Group Name is Required',
 				'sub_group_name.unique' => 'Customer Channel Sub Group Name is already taken',
 				'sub_group_name.max' => 'Maximum 255 Characters',
-				'sub_group_name.min' => 'Minimum 3 Characters',
+				'sub_group_name.min' => 'Minimum 2 Characters',
 			];
 			if (!empty($request->customer_channel_groups)) {
 				foreach ($request->customer_channel_groups as $customer_channel_group) {
@@ -121,7 +121,7 @@ class CustomerChannelGroupController extends Controller {
 						'sub_group_name' => [
 							'required:true',
 							'max:191',
-							'min:3',
+							'min:2',
 							'unique:customer_channel_groups,name,' . $customer_channel_group['id'] . ',id,company_id,' . Auth::user()->company_id . ',parent_id,' . $request->id,
 						],
 					], $error_messages1);
