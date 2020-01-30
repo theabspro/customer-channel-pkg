@@ -192,7 +192,7 @@ app.component('customerChannelGroupForm', {
         }
 
         //VALIDATEOR FOR MULTIPLE 
-        $.validator.messages.minlength = 'Minimum of 3 charaters';
+        $.validator.messages.minlength = 'Minimum of 2 charaters';
         $.validator.messages.maxlength = 'Maximum of 191 charaters';
         jQuery.validator.addClassRules("sub_group_name", {
             required: true,
@@ -206,7 +206,7 @@ app.component('customerChannelGroupForm', {
             rules: {
                 'name': {
                     required: true,
-                    minlength: 3,
+                    minlength: 2,
                     maxlength: 191,
                 },
                 'sub_group_name': {
