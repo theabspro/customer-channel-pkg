@@ -1,4 +1,4 @@
 <?php
 return [
-	'DEV' => env('TESTIMONIAL_PKG_DEV', false),
+	'DEV' => env('CUSTOMER_CHANNEL_PKG_DEV', false),
 ];
