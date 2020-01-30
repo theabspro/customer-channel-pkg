@@ -1,5 +1,4 @@
 app.config(['$routeProvider', function($routeProvider) {
-
     $routeProvider.
     //CUSTOMER CHANNEL GROUPS
     when('/customer-channel-pkg/customer-channel-group/list', {
@@ -34,6 +33,7 @@ app.component('customerChannelGroupList', {
                 },
             },
             processing: true,
+            "ordering": false,
             serverSide: true,
             paging: true,
             stateSave: true,
@@ -49,7 +49,7 @@ app.component('customerChannelGroupList', {
             columns: [
                 { data: 'action', class: 'action', name: 'action', searchable: false },
                 { data: 'name', name: 'customer_channel_groups.name' },
-                // { data: 'status', name: 'customer_channel_groups.code' },
+                { data: 'sup_groups_count', name: 'sup_groups_count', searchable: false },
                 { data: 'status', name: 'status', searchable: false },
             ],
             "initComplete": function(settings, json) {
@@ -192,8 +192,8 @@ app.component('customerChannelGroupForm', {
         }
 
         //VALIDATEOR FOR MULTIPLE 
-        $.validator.messages.minlength = 'Minimum of 2 charaters';
-        $.validator.messages.maxlength = 'Maximum of 191 charaters';
+        // $.validator.messages.minlength = 'Minimum of 2 charaters';
+        // $.validator.messages.maxlength = 'Maximum of 191 charaters';
         jQuery.validator.addClassRules("sub_group_name", {
             required: true,
             minlength: 2,
@@ -208,9 +208,6 @@ app.component('customerChannelGroupForm', {
                     required: true,
                     minlength: 2,
                     maxlength: 191,
-                },
-                'sub_group_name': {
-                    required: true,
                 },
             },
             invalidHandler: function(event, validator) {

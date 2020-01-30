@@ -21,9 +21,14 @@ class CustomerChannelGroupController extends Controller {
 			->select(
 				'customer_channel_groups.id',
 				'customer_channel_groups.name',
+				DB::raw('COUNT(ccg.id) as sup_groups_count'),
 				DB::raw('IF(customer_channel_groups.deleted_at IS NULL,"Active","Inactive") as status')
 			)
 			->where('customer_channel_groups.company_id', Auth::user()->company_id)
+			->join('customer_channel_groups as ccg', function ($query) {
+				$query->on('ccg.parent_id', 'customer_channel_groups.id')
+					->whereNotNull('ccg.parent_id');
+			})
 			->where(function ($query) use ($request) {
 				if (!empty($request->name)) {
 					$query->where('customer_channel_groups.name', 'LIKE', '%' . $request->name . '%');
@@ -35,12 +40,15 @@ class CustomerChannelGroupController extends Controller {
 				}
 			})
 			->whereNull('customer_channel_groups.parent_id')
-			->orderby('customer_channel_groups.id', 'desc');
-
+			->groupBy('customer_channel_groups.id')
+			->orderBy('customer_channel_groups.id', 'desc')
+		// ->get()
+		;
+		// dd($customer_channel_groups);
 		return Datatables::of($customer_channel_groups)
-		// ->addColumn('code', function ($customer_channel_group) {
+		// ->addColumn('name', function ($customer_channel_group) {
 		// 	$status = $customer_channel_group->status == 'Active' ? 'green' : 'red';
-		// 	return '<span class="status-indicator ' . $status . '"></span>' . $customer_channel_group->code;
+		// 	return '<span class="status-indicator ' . $status . '"></span>' . $customer_channel_group->name;
 		// })
 			->addColumn('action', function ($customer_channel_group) {
 				$edit = asset('public/img/content/table/edit-yellow.svg');
@@ -91,11 +99,22 @@ class CustomerChannelGroupController extends Controller {
 	public function saveCustomerChannelGroup(Request $request) {
 		// dd($request->all());
 		try {
+
+			//DUPLIDATE SUB GROUP VALIDATION WHILE ADDING NEW GROUP
+			if (!empty($request->customer_channel_groups)) {
+				$customer_channel_group = array_column($request->customer_channel_groups, 'sub_group_name');
+				$customer_channel_group_count = count(array_map('strtolower', $customer_channel_group));
+				$customer_channel_group_unique_count = count(array_unique(array_map('strtolower', $customer_channel_group)));
+				if ($customer_channel_group_count != $customer_channel_group_unique_count) {
+					return response()->json(['success' => false, 'errors' => ['Remove Duplicate Value in Sub Groups!']]);
+				}
+			}
+
 			$error_messages = [
 				'name.required' => 'Customer Channel Group Name is Required',
 				'name.unique' => 'Customer Channel Group Name is already taken',
-				'name.max' => 'Maximum 255 Characters',
-				'name.min' => 'Minimum 2 Characters',
+				'name.max' => 'Customer Channel Group Name Maximum 255 Characters',
+				'name.min' => 'Customer Channel Group Name Minimum 2 Characters',
 			];
 			$validator = Validator::make($request->all(), [
 				'name' => [
@@ -112,8 +131,8 @@ class CustomerChannelGroupController extends Controller {
 			$error_messages1 = [
 				'sub_group_name.required' => 'Customer Channel Group Name is Required',
 				'sub_group_name.unique' => 'Customer Channel Sub Group Name is already taken',
-				'sub_group_name.max' => 'Maximum 255 Characters',
-				'sub_group_name.min' => 'Minimum 2 Characters',
+				'sub_group_name.max' => 'Customer Channel Sub Group Name Maximum 255 Characters',
+				'sub_group_name.min' => 'Customer Channel Sub Group Name Minimum 2 Characters',
 			];
 			if (!empty($request->customer_channel_groups)) {
 				foreach ($request->customer_channel_groups as $customer_channel_group) {
